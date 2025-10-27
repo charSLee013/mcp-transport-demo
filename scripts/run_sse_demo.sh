@@ -12,6 +12,19 @@ if [[ ! -x "$PY" ]]; then
   exit 1
 fi
 
+if ! "$PY" -c 'import importlib.metadata as m; m.version("mcp")' >/dev/null 2>&1; then
+  cat >&2 <<'EOF'
+[run] MCP package metadata not found in .venv.
+[run] Please install the project into the virtualenv before running demos, for example:
+  uv sync --frozen --all-extras --dev
+  # or
+  uv pip install -e .
+
+Re-run bash scripts/run_sse_demo.sh after installation.
+EOF
+  exit 1
+fi
+
 echo "[run] killing existing demo server (if any)"
 # best-effort kill by script path
 if pgrep -f "$SERVER_PY" >/dev/null 2>&1; then

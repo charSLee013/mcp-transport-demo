@@ -41,7 +41,14 @@ bash scripts/run_streamable_http_demo.sh
 
 ## 日志与排错 Logs & Troubleshooting
 
-- 若脚本无法找到 `.venv/bin/python`，请确认已执行 `uv sync` 或自行调整脚本中的 `PY` 变量。
+- 若脚本无法找到 `.venv/bin/python`，请确认已执行 `uv sync`；首次运行推荐：
+
+  ```bash
+  uv sync --frozen --all-extras --dev
+  uv pip install -e .
+  ```
+
+  这样可在 `.venv/` 中注册项目自身的包元数据，避免运行时找不到 `mcp` 发行版。
 - 如需要查看实时输出，可在运行脚本后执行 `tail -f /tmp/sse_client.log` 或 `tail -f /tmp/streamable_http_client.log`。
 - 两个演示均使用 `FastMCP`，具体实现位于：
   - SSE 服务端：`examples/snippets/servers/sse_progress_demo.py`
